@@ -1,0 +1,50 @@
+You are given the weights and values of items, and you need to put these items in a knapsack of capacity capacity to achieve the maximum total value in the knapsack. Each item is available in only one quantity.
+
+In other words, you are given two integer arrays val[] and wt[], which represent the values and weights associated with items, respectively. You are also given an integer capacity, which represents the knapsack capacity. Your task is to find the maximum sum of values of a subset of val[] such that the sum of the weights of the corresponding subset is less than or equal to capacity. You cannot break an item; you must either pick the entire item or leave it (0-1 property).
+
+Examples :
+
+Input: capacity = 4, val[] = [1, 2, 3], wt[] = [4, 5, 1] 
+Output: 3
+Explanation: Choose the last item, which weighs 1 unit and has a value of 3.
+Input: capacity = 3, val[] = [1, 2, 3], wt[] = [4, 5, 6] 
+Output: 0
+Explanation: Every item has a weight exceeding the knapsack's capacity (3).
+Input: capacity = 5, val[] = [10, 40, 30, 50], wt[] = [5, 4, 6, 3] 
+Output: 50
+Explanation: Choose the last item (value 50, weight 3) for a total value of 50.
+Constraints:
+2 ≤ val.size() = wt.size() ≤ 103
+1 ≤ capacity ≤ 103
+1 ≤ val[i] ≤ 103
+1 ≤ wt[i] ≤ 103
+
+CODE :
+
+
+class Solution {
+    // Function to return max value that can be put in knapsack of capacity.
+    static int knapSack(int capacity, int val[], int wt[]) {
+        // code here
+        
+        int[][] dp = new int[capacity+1][val.length];
+        int res = solve(capacity,val,wt,val.length-1,dp);
+        return res;
+    }
+    
+    static int solve(int capacity,int val[] ,int wt[],int i,int[][] dp){
+        
+        
+        if(i < 0) return 0;
+        if(wt[i] > capacity) return solve(capacity,val,wt,i-1,dp);
+        
+        if(dp[capacity][i] != 0) return dp[capacity][i];
+        
+        int take = solve(capacity-wt[i],val,wt,i-1,dp) + val[i];
+        int untake = solve(capacity,val,wt,i-1,dp);
+        
+        dp[capacity][i] = Math.max(take,untake);
+        
+        return Math.max(take,untake);
+    }
+}
